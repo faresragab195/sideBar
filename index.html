@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animated Sidebar - Light Mode</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --fg: #111;
+      --accent: #3b82f6;
+      --shadow: rgba(0, 0, 0, 0.1);
+      --radius: 16px;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    /* Toggle Button */
+    .toggle-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 50px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px var(--shadow);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .toggle-btn:hover {
+      background: var(--accent);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .toggle-btn i {
+      color: var(--accent);
+      transition: color 0.3s ease;
+    }
+
+    .toggle-btn:hover i {
+      color: white;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      transition: left 0.4s ease, right 0.4s ease;
+    }
+
+    html[dir="rtl"] .sidebar {
+      left: auto;
+      right: 30px;
+    }
+
+    .sidebar a {
+      background: white;
+      border-radius: var(--radius);
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: var(--fg);
+      font-weight: 600;
+      box-shadow: 0 6px 15px var(--shadow);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar a i {
+      font-size: 22px;
+      transition: transform 0.4s ease, color 0.3s ease;
+      color: var(--accent);
+    }
+
+    .sidebar a span {
+      position: absolute;
+      left: 70px;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      background: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px var(--shadow);
+      color: var(--fg);
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    html[dir="rtl"] .sidebar a span {
+      left: auto;
+      right: 70px;
+      transform: translateX(10px);
+    }
+
+    .sidebar a:hover {
+      transform: scale(1.1);
+    }
+
+    .sidebar a:hover i {
+      transform: rotate(10deg);
+      color: var(--fg);
+    }
+
+    .sidebar a:hover span {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Brand colors for icons */
+    .facebook i { color: #1877f2; }
+    .twitter i { color: #1da1f2; }
+    .instagram i { color: #e1306c; }
+    .linkedin i { color: #0077b5; }
+    .youtube i { color: #ff0000; }
+
+    /* RTL: swap direction */
+    html[dir="rtl"] .toggle-btn { right: auto; left: 20px; }
+
+  </style>
+</head>
+<body>
+
+  <!-- Toggle Button -->
+  <button class="toggle-btn" id="langToggle">
+    <i class="fa-solid fa-language"></i>
+    <span class="label">EN</span>
+  </button>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <a href="#" class="facebook"><i class="fab fa-facebook-f"></i><span>Facebook</span></a>
+    <a href="#" class="twitter"><i class="fab fa-twitter"></i><span>Twitter</span></a>
+    <a href="#" class="instagram"><i class="fab fa-instagram"></i><span>Instagram</span></a>
+    <a href="#" class="linkedin"><i class="fab fa-linkedin-in"></i><span>LinkedIn</span></a>
+    <a href="#" class="youtube"><i class="fab fa-youtube"></i><span>YouTube</span></a>
+  </div>
+
+  <script>
+    (function() {
+      const btn = document.getElementById('langToggle');
+
+      function applyLang(lang) {
+        const isRTL = lang === 'ar';
+        document.documentElement.setAttribute('dir', isRTL ? 'rtl' : 'ltr');
+        document.documentElement.setAttribute('lang', isRTL ? 'ar' : 'en');
+        const label = btn.querySelector('.label');
+        if (label) label.textContent = isRTL ? 'AR' : 'EN';
+      }
+
+      const saved = localStorage.getItem('lang') || 'en';
+      applyLang(saved);
+
+      btn.addEventListener('click', function() {
+        const next = document.documentElement.getAttribute('dir') === 'rtl' ? 'en' : 'ar';
+        applyLang(next);
+        localStorage.setItem('lang', next);
+      });
+    })();
+  </script>
+
+</body>
+</html>
